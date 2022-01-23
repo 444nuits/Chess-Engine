@@ -80,7 +80,6 @@ def NotControled(gs, squares):
     gs.Whitetomove = not gs.Whitetomove
     n = len(ValidMoves)
     for i in range(0, n):
-        print(ValidMoves[i].Notation)
         for c in squares:
             if(ValidMoves[i].to == c):
                 return False
@@ -117,3 +116,4 @@ def CreateValidMovesNC(gs):
             if(color == gs.board[r][c][0]):
                 ValidMoves += valid.func_dictioNC[gs.board[r][c][1]](gs, (c, r), color)
     return ValidMoves
+

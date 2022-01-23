@@ -26,8 +26,6 @@ def isValidMove(move, gs):
             return (False, "Mate")
         else:
             return (False, "Pat")
-    for i in range(0, len(ValidMoves)):
-        print(ValidMoves[i].Notation)
     n = len(ValidMoves)
     for i in range(n):
         testedmove = ValidMoves[i]
@@ -52,7 +50,6 @@ def InCheck(gs, king):
     gs.Whitetomove = not gs.Whitetomove
     n = len(ValidMoves)
     for i in range(0, n):
-        print(ValidMoves[i].Notation)
         if(ValidMoves[i].to == king):
             return True
     return False

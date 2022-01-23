@@ -93,6 +93,10 @@ def applyMove(clicks, gs):
             board[move.origin[1]][7] = "--"
         if(move.enpassant == True):
             board[move.origin[1]][move.to[0]] = "--"
+            if(gs.Whitetomove):
+                move.piececaptured = "bp"
+            else :
+                move.piececaptured = "wp"
         if(move.piecemoved == "wK"):
             gs.WhiteKing = (move.to[0], move.to[1])
         if (move.piecemoved == "bK"):
@@ -127,7 +131,14 @@ def applyMove(clicks, gs):
                         if (e.key == p.K_n):
                             board[move.to[1]][move.to[0]] = board[move.to[1]][move.to[0]][0] + "N"
                             asking = False
-    print(move.getChessNotation())
+    #print(move.getChessNotation())
+
+def UndoMove(gs):
+    if(len(gs.movelog)):
+        move = gs.movelog.pop()
+        gs.board[move.to[1]][move.to[0]] = move.piececaptured
+        gs.board[move.origin[1]][move.origin[0]] = move.piecemoved
+        gs.Whitetomove = not gs.Whitetomove
 
 def castles(move, gs):
     if(move.origin[1] == 7):

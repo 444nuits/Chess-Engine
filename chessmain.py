@@ -6,7 +6,8 @@ Runs the game
 
 import pygame as p
 import chessengine
-
+import random
+import chessAI
 
 WIDTH = HEIGHT = 512 #resolution images
 
@@ -40,6 +41,8 @@ def main():
     screen = p.display.set_mode((WIDTH, HEIGHT))
     clock = p.time.Clock()
     gs = chessengine.GameState()
+    if(random.randint(0, 1)):
+        chessAI.ApplyMoveBoard(gs, chessAI.play(gs))
     ImagesLoad()
     clicks = []
     case = ()
@@ -49,7 +52,7 @@ def main():
             if e.type == p.QUIT:
                 running = False
             elif e.type == p.MOUSEBUTTONDOWN :
-                getMove(clicks, case, gs)
+                getMovewithAI(clicks, case, gs)
         drawGameState(screen, gs)
         clock.tick(MAX_FPS)
         p.display.flip()
@@ -69,6 +72,23 @@ def getMove(clicks, case, gs) :
         clicks.pop()
         clicks.pop()
         case = ()
+
+def getMovewithAI(clicks, case, gs) :
+    location = p.mouse.get_pos()
+    col = location[0] // CASE_SIZE
+    row = location[1] // CASE_SIZE
+    if case == (col, row) :
+        case = ()
+    else :
+        case = (col, row)
+        clicks.append(case)
+    if(len(clicks) == 2):
+        chessengine.applyMove(clicks, gs)
+        chessAI.ApplyMoveBoard(gs, chessAI.play(gs))
+        clicks.pop()
+        clicks.pop()
+        case = ()
+
 
 
 def drawGameState(screen, gs):
