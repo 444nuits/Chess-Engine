@@ -80,29 +80,48 @@ def applyMove(clicks, gs):
     move = Move(gs.board, o=clicks[0], t=clicks[1])
     board = gs.board
     (bool, state) = valid.isValidMove(move, gs)
-    if(bool):
-        print("Valid Move,", "black" if gs.Whitetomove else "white", "to play")
-        castles(move, gs)
-        board[move.origin[1]][move.origin[0]] = "--"
-        board[move.to[1]][move.to[0]] = move.piecemoved
-        if(move.bigcastle == True):
-            board[move.origin[1]][3] = board[move.origin[1]][0]
-            board[move.origin[1]][0] = "--"
-        if(move.castle == True):
-            board[move.origin[1]][5] = board[move.origin[1]][7]
-            board[move.origin[1]][7] = "--"
-        if(move.enpassant == True):
-            board[move.origin[1]][move.to[0]] = "--"
-            if(gs.Whitetomove):
-                move.piececaptured = "bp"
-            else :
-                move.piececaptured = "wp"
-        if(move.piecemoved == "wK"):
-            gs.WhiteKing = (move.to[0], move.to[1])
-        if (move.piecemoved == "bK"):
-            gs.BlackKing = (move.to[0], move.to[1])
-        gs.movelog.append(move)
-        gs.Whitetomove = not gs.Whitetomove
+    if ((gs.Whitetomove and move.piecemoved[0] == "w") or (not gs.Whitetomove and move.piecemoved[0] == "b")):
+        if(bool):
+            print("Valid Move,", "black" if gs.Whitetomove else "white", "to play")
+            castles(move, gs)
+            board[move.origin[1]][move.origin[0]] = "--"
+            board[move.to[1]][move.to[0]] = move.piecemoved
+            if(move.bigcastle == True):
+                board[move.origin[1]][3] = board[move.origin[1]][0]
+                board[move.origin[1]][0] = "--"
+            if(move.castle == True):
+                board[move.origin[1]][5] = board[move.origin[1]][7]
+                board[move.origin[1]][7] = "--"
+            if(move.enpassant == True):
+                board[move.origin[1]][move.to[0]] = "--"
+                if(gs.Whitetomove):
+                    move.piececaptured = "bp"
+                else :
+                    move.piececaptured = "wp"
+            if(move.piecemoved == "wK"):
+                gs.WhiteKing = (move.to[0], move.to[1])
+            if (move.piecemoved == "bK"):
+                gs.BlackKing = (move.to[0], move.to[1])
+            gs.movelog.append(move)
+            gs.Whitetomove = not gs.Whitetomove
+            if(move.piecemoved[1] == "p"):
+                if(move.to[1] == 0 or move.to[1] == 7):
+                    asking = True
+                    while asking:
+                        for e in p.event.get():
+                            if(e.type == p.KEYDOWN):
+                                if(e.key == p.K_r):
+                                    board[move.to[1]][move.to[0]] = board[move.to[1]][move.to[0]][0] + "R"
+                                    asking = False
+                                if (e.key == p.K_q):
+                                    board[move.to[1]][move.to[0]] = board[move.to[1]][move.to[0]][0] + "Q"
+                                    asking = False
+                                if (e.key == p.K_b):
+                                    board[move.to[1]][move.to[0]] = board[move.to[1]][move.to[0]][0] + "B"
+                                    asking = False
+                                if (e.key == p.K_n):
+                                    board[move.to[1]][move.to[0]] = board[move.to[1]][move.to[0]][0] + "N"
+                                    asking = False
     else :
         if(state == "Mate"):
             print("Mate")
@@ -113,24 +132,6 @@ def applyMove(clicks, gs):
                 print("Invalid Move, white try another")
             else :
                 print("Invalid Move, black try another")
-    if(move.piecemoved[1] == "p"):
-        if(move.to[1] == 0 or move.to[1] == 7):
-            asking = True
-            while asking:
-                for e in p.event.get():
-                    if(e.type == p.KEYDOWN):
-                        if(e.key == p.K_r):
-                            board[move.to[1]][move.to[0]] = board[move.to[1]][move.to[0]][0] + "R"
-                            asking = False
-                        if (e.key == p.K_q):
-                            board[move.to[1]][move.to[0]] = board[move.to[1]][move.to[0]][0] + "Q"
-                            asking = False
-                        if (e.key == p.K_b):
-                            board[move.to[1]][move.to[0]] = board[move.to[1]][move.to[0]][0] + "B"
-                            asking = False
-                        if (e.key == p.K_n):
-                            board[move.to[1]][move.to[0]] = board[move.to[1]][move.to[0]][0] + "N"
-                            asking = False
     #print(move.getChessNotation())
 
 def UndoMove(gs):
